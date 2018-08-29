@@ -17,6 +17,11 @@ public class RentalTruck {
     @Column
     private TruckSize truckSize;
 
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "truckVin")
+    private Rental rental;
+
     RentalTruck() {
         // default constructor required by JPA
     }
@@ -33,6 +38,8 @@ public class RentalTruck {
         }
 
         this.status = RentalTruckStatus.RESERVED;
+
+        this.rental = new Rental(customerName,Vin.of(this.vin.getVin()));
     }
 
     public void pickUp() {
@@ -41,6 +48,9 @@ public class RentalTruck {
         }
 
         this.status = RentalTruckStatus.RENTED;
+
+
+        this.rental.pickUp();
     }
 
     public void dropOff(int distanceTraveled) {
@@ -49,6 +59,9 @@ public class RentalTruck {
         }
 
         this.status = RentalTruckStatus.RENTABLE;
+
+
+        this.rental.dropOff(distanceTraveled);
     }
 
     public void preventRenting() {
@@ -79,7 +92,7 @@ public class RentalTruck {
     }
 
     public Rental getRental() {
-        return null;
+        return this.rental;
     }
 
     @Override
