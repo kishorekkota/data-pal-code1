@@ -53,6 +53,7 @@ public class FleetTruckFromEventsTest {
 
         assertThat(truck.getVersion()).isEqualTo(1);
         assertThat(truck.getStatus()).isEqualTo(FleetTruckStatus.IN_INSPECTION);
+       
     }
 
     @Test
