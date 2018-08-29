@@ -24,19 +24,49 @@ public class FleetTruck {
     }
 
     public FleetTruck(Vin vin, Integer odometerReading, Integer truckLength) {
-        // TODO implement me
+
+        if(odometerReading < 0)
+            throw new IllegalArgumentException("Cannot buy a truck with negative odometer reading");
+
+        this.vin = vin;
+        this.odometerReading = odometerReading;
+        this.truckLength = truckLength;
+        this.status = FleetTruckStatus.INSPECTABLE;
+
+
+
     }
 
     public void returnFromInspection(int odometerReading) {
-        // TODO implement me
+
+
+        if(this.odometerReading > odometerReading)
+            throw new IllegalArgumentException("Odometer reading cannot be less than previous reading");
+
+
+        if(this.status != FleetTruckStatus.IN_INSPECTION)
+            throw new IllegalStateException("Truck is not currently in inspection");
+
+
+        this.status = FleetTruckStatus.INSPECTABLE;
+
+        this.odometerReading = odometerReading;
     }
 
     public void sendForInspection() {
-        // TODO implement me
+
+        if(this.status != FleetTruckStatus.INSPECTABLE)
+            throw new IllegalStateException("Truck cannot be inspected");
+
+        this.status = FleetTruckStatus.IN_INSPECTION;
     }
 
     public void removeFromYard() {
-        // TODO implement me
+
+        if(this.status == FleetTruckStatus.IN_INSPECTION)
+            throw new IllegalStateException("Cannot remove truck, currently in inspection");
+
+        this.status = FleetTruckStatus.NOT_INSPECTABLE;
     }
 
     public void returnToYard(int distanceTraveled) {

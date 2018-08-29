@@ -3,6 +3,7 @@ package io.pivotal.pal.wehaul.application;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.pivotal.pal.wehaul.fleet.domain.FleetService;
+import io.pivotal.pal.wehaul.fleet.domain.Vin;
 import io.pivotal.pal.wehaul.rental.domain.ConfirmationNumber;
 import io.pivotal.pal.wehaul.rental.domain.Rental;
 import io.pivotal.pal.wehaul.rental.domain.RentalService;
@@ -31,7 +32,9 @@ public class RentalController {
 
         String customerName = createRentalDto.getCustomerName();
         String truckSize = createRentalDto.getTruckSize();
-        rentalService.create(customerName, TruckSize.valueOf(truckSize));
+        Rental rental = rentalService.create(customerName, TruckSize.valueOf(truckSize));
+
+        fleetService.removeFromYard(Vin.of(rental.getTruckVin().getVin()));
 
         return ResponseEntity.ok().build();
     }

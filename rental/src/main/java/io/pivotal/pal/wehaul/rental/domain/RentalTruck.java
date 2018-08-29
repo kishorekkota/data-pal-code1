@@ -22,19 +22,37 @@ public class RentalTruck {
     }
 
     public RentalTruck(Vin vin, TruckSize truckSize) {
-        // TODO implement me
+        this.vin = vin;
+        this.truckSize = truckSize;
+        this.status = RentalTruckStatus.RENTABLE;
     }
 
     public void reserve() {
-        // TODO implement me
+
+
+        if(this.status == RentalTruckStatus.NOT_RENTABLE)
+            throw new IllegalStateException("Truck cannot be reserved");
+
+        this.status = RentalTruckStatus.RESERVED;
     }
 
     public void pickUp() {
-        // TODO implement me
+
+
+        if(this.status != RentalTruckStatus.RESERVED)
+            throw new IllegalStateException("Only reserved trucks can be picked up");
+
+        this.status = RentalTruckStatus.RENTED;
     }
 
     public void dropOff() {
-        // TODO implement me
+
+        if(this.status != RentalTruckStatus.RENTED)
+        {
+            throw new IllegalStateException("Truck is not currently rented");
+        }
+
+        this.status = RentalTruckStatus.RENTABLE;
     }
 
     public void preventRenting() {
