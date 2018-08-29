@@ -42,6 +42,8 @@ public class RentalTruck extends AbstractAggregateRoot {
 
         this.status = RentalTruckStatus.RESERVED;
         this.rental = new Rental(customerName, this.vin);
+
+        this.registerEvent(new RentalTruckReserved(this.vin.getVin()));
     }
 
     public void pickUp() {
@@ -60,6 +62,8 @@ public class RentalTruck extends AbstractAggregateRoot {
 
         this.status = RentalTruckStatus.RENTABLE;
         this.rental.dropOff(distanceTraveled);
+
+        this.registerEvent(new RentalTruckDroppedOff(this.vin.getVin(),distanceTraveled));
     }
 
     public void preventRenting() {

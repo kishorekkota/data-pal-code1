@@ -28,6 +28,8 @@ public class FleetService {
         fleetTruck.sendForInspection();
 
         fleetTruckRepository.save(fleetTruck);
+
+
     }
 
     public void returnFromInspection(Vin vin, String notes, int odometerReading) {

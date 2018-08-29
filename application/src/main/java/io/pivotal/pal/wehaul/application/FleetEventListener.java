@@ -26,11 +26,11 @@ public class FleetEventListener {
 
     @EventListener
     public void onFleetTruckSentForInspection(FleetTruckSentForInspection event) {
-        // TODO implement me
+        rentalService.preventRenting( Vin.of(event.getVin()));
     }
 
     @EventListener
     public void onFleetTruckReturnedFromInspection(FleetTruckReturnedFromInspection event) {
-        // TODO implement me
+        this.rentalService.allowRenting(Vin.of(event.getVin()));
     }
 }

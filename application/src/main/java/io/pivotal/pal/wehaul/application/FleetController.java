@@ -19,19 +19,13 @@ import java.util.stream.Collectors;
 public class FleetController {
 
     private final FleetService fleetService;
-    private final RentalService rentalService;
+
 
     public FleetController(FleetService fleetService) {
         this.fleetService = fleetService;
-        this.rentalService = null;
+
     }
 
-    @Deprecated
-    @Autowired
-    public FleetController(FleetService fleetService, RentalService rentalService) {
-        this.fleetService = fleetService;
-        this.rentalService = rentalService;
-    }
 
     @PostMapping
     public ResponseEntity<Void> buyTruck(@RequestBody BuyTruckDto buyTruckDto) {
@@ -60,7 +54,7 @@ public class FleetController {
     public ResponseEntity<Void> sendForInspection(@PathVariable String vin) {
 
         fleetService.sendForInspection(Vin.of(vin));
-        rentalService.preventRenting(io.pivotal.pal.wehaul.rental.domain.Vin.of(vin));
+
         return ResponseEntity.ok().build();
     }
 
@@ -74,7 +68,7 @@ public class FleetController {
         int odometerReading = returnFromInspectionDto.getOdometerReading();
 
         fleetService.returnFromInspection(Vin.of(vin), notes, odometerReading);
-        rentalService.allowRenting(io.pivotal.pal.wehaul.rental.domain.Vin.of(vin));
+
 
         return ResponseEntity.ok().build();
     }

@@ -58,6 +58,10 @@ public class FleetTruck extends AbstractAggregateRoot {
 
         TruckInspection truckInspection = new TruckInspection(this.vin, odometerReading, notes);
         this.inspections.add(truckInspection);
+
+
+        this.registerEvent(new FleetTruckReturnedFromInspection(this.vin.getVin(),this.status.name(),odometerReading,notes));
+
     }
 
     public void sendForInspection() {
@@ -66,6 +70,8 @@ public class FleetTruck extends AbstractAggregateRoot {
         }
 
         this.status = FleetTruckStatus.IN_INSPECTION;
+
+        this.registerEvent(new FleetTruckSentForInspection(this.vin.getVin(),this.status.name()));
     }
 
     public void removeFromYard() {
@@ -74,6 +80,9 @@ public class FleetTruck extends AbstractAggregateRoot {
         }
 
         this.status = FleetTruckStatus.NOT_INSPECTABLE;
+
+
+        this.registerEvent(new FleetTruckRemovedFromYard(this.vin.getVin(),this.status.name()));
     }
 
     public void returnToYard(int distanceTraveled) {
@@ -86,6 +95,9 @@ public class FleetTruck extends AbstractAggregateRoot {
 
         this.status = FleetTruckStatus.INSPECTABLE;
         this.odometerReading += distanceTraveled;
+
+        this.registerEvent(new FleetTruckReturnedToYard(this.vin.getVin(),this.status.name(),this.odometerReading));
+
     }
 
     public Vin getVin() {
