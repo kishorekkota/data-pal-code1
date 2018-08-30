@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.pivotal.pal.wehaul.fleet.domain.FleetTruck;
 import io.pivotal.pal.wehaul.fleet.domain.FleetTruckRepository;
+import io.pivotal.pal.wehaul.fleet.domain.FleetTruckUpdated;
 import io.pivotal.pal.wehaul.fleet.domain.Vin;
 import io.pivotal.pal.wehaul.fleet.domain.event.FleetTruckEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -26,6 +29,8 @@ public class FleetTruckEventSourcedRepository implements FleetTruckRepository {
 
     private final FleetTruckEventStoreRepository eventStoreRepository;
 
+
+
     public FleetTruckEventSourcedRepository(FleetTruckEventStoreRepository eventStoreRepository) {
         this.eventStoreRepository = eventStoreRepository;
     }
@@ -37,6 +42,9 @@ public class FleetTruckEventSourcedRepository implements FleetTruckRepository {
         List<FleetTruckEventStoreEntity> eventEntities = mapEventToEntities(events, fleetTruck.getVersion());
 
         eventStoreRepository.save(eventEntities);
+
+
+
 
         return findOne(fleetTruck.getVin());
     }

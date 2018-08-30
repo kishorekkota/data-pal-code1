@@ -19,6 +19,10 @@ public class FleetTruckUpdatedEventListener {
 
     @EventListener
     public void onFleetTruckUpdated(FleetTruckUpdated event) {
-        // TODO implement me
+        fleetTruckSnapshotRepository.save(new FleetTruckSnapshot(event.getVin(),
+                event.getStatus(),
+                event.getOdometerReading(),
+                event.getTruckLength(),
+                event.getLastInspectionOdometerReading()));
     }
 }

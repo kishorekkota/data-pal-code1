@@ -30,6 +30,11 @@ public class EventPublishingFleetTruckRepository implements FleetTruckRepository
         dirtyEvents.stream()
                 .forEach(event -> applicationEventPublisher.publishEvent(event));
 
+
+        FleetTruckUpdated fleetTruckUpdate = new FleetTruckUpdated(fleetTruck);
+
+        applicationEventPublisher.publishEvent(fleetTruckUpdate);
+
         return savedFleetTruck;
     }
 
