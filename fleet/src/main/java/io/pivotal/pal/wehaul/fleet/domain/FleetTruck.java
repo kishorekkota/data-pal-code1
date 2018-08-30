@@ -39,6 +39,10 @@ public class FleetTruck extends AbstractAggregateRoot {
     }
 
     public static FleetTruck fromEvents(List<FleetTruckEvent> events) {
+
+        if(events == null || events.size() == 0)
+            return null;
+
         final FleetTruck fleetTruck = new FleetTruck();
         events.forEach(event -> fleetTruck.applyEvent(event));
         fleetTruck.version = events.size() - 1;
@@ -99,14 +103,7 @@ public class FleetTruck extends AbstractAggregateRoot {
                 notes
         );
 
-        this.status = FleetTruckStatus.valueOf(event.getStatus());
-        this.odometerReading = event.getOdometerReading();
-
-        TruckInspection truckInspection =
-                new TruckInspection(this.vin, event.getOdometerReading(), event.getNotes());
-        this.inspections.add(truckInspection);
-
-        this.registerEvent(event);
+        handleEvent(event);
     }
 
     private void handleEvent(FleetTruckReturnedFromInspection event) {
